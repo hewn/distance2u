@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/Shareback"
+    tools:context=".ShareDis">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relaout">
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:id="@+id/blank"
+            android:layout_below="@+id/img"/>
+
+        <TextView
+            android:id="@+id/resultshow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/blank"
+            android:paddingLeft="15dp"
+            android:textColor="@color/colorShare"
+            android:textSize="21sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dis"
+            android:text="『距离』"
+            android:textSize="18sp"
+            android:textColor="@color/colorShare"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/resultshow"
+            android:paddingRight="13dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:id="@+id/blank1"
+            android:layout_below="@+id/dis"/>
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="保存"
+        android:id="@+id/save"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
