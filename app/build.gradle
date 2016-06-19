@@ -6,7 +6,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     defaultConfig {
-        applicationId "cn.solodog.maptest"
+        applicationId "cn.solodog.distance2u"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -14,9 +14,9 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("heptagonal.jks")
+            storeFile file("distance2u.jks")
             storePassword "Shan7426"
-            keyAlias "amaptest"
+            keyAlias "distance2u"
             keyPassword "Shan7426"
         }
     }

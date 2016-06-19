@@ -1,4 +1,4 @@
-package cn.solodog.maptest;
+package cn.solodog.distance2u;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -216,8 +216,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     if (poiItems != null && poiItems.size() > 0) {
                         aMap.clear();// 清理之前的图标
                         PoiOverlay poiOverlay = new PoiOverlay(aMap, poiItems);
-                        poiOverlay.removeFromMap();
-                        poiOverlay.addToMap();
+//                        poiOverlay.removeFromMap();
+//                        poiOverlay.addToMap();
                         poiOverlay.zoomToSpan();
                     } else {
                         Toast.makeText(MainActivity.this, "无结果", Toast.LENGTH_SHORT).show();
@@ -244,7 +244,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         }
         return true;
     }
-
     //------------------查询end------------------
     //------------------路径start----------------
     @Override

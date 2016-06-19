@@ -1,4 +1,4 @@
-package cn.solodog.maptest;
+package cn.solodog.distance2u;
 
 import org.junit.Test;
 
