@@ -38,4 +38,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile files('libs/AMap3DMap_3.3.2_AMapNavi_1.8.0_AMapSearch_3.2.1_AMapLocation_2.5.0_20160526.jar')
     compile files('libs/picasso-2.5.2.jar')
+    compile project(':volley')
 }

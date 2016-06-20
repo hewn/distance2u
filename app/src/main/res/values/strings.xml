@@ -3,4 +3,21 @@
     <string name="search">搜索</string>
     <string name="more">更多</string>
     <string name="about">关于</string>
+    <string name="ToolbarTitle">距离</string>
+    <string name="LocationFail">定位失败,</string>
+    <string name="Locating">正在搜索:</string>
+    <string name="PleaseTypeKey">请输入搜索关键字</string>
+    <string name="NoResult">无结果</string>
+    <string name="SettleStart">起点已设置</string>
+    <string name="PleaseResetStart">请先重置起点</string>
+    <string name="TypeToStart">请点击地图选择起点</string>
+    <string name="TypeToEnd">请点击地图选择终点</string>
+    <string name="NoSearchResult">没有搜索到相关数据</string>
+    <string name="RealityDistance">现实的距离是</string>
+    <string name="Meter">米</string>
+    <string name="NoFileOperationAuthority">没有文件操作权限</string>
+    <string name="Saved">保存完毕</string>
+    <string name="ImagesSaved">图片已保存</string>
+    <string name="ClickToViewImage">点击查看图片</string>
+    <string name="version">v1.0</string>
 </resources>

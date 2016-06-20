@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.PersistableBundle;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -43,9 +43,10 @@ import com.amap.api.services.route.WalkRouteResult;
 
 import java.util.List;
 
-public class MainActivity extends Activity implements LocationSource,
+public class MainActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener, PoiSearch.OnPoiSearchListener,
-        SearchView.OnQueryTextListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, OnRouteSearchListener {
+        AMap.OnMapClickListener,
+        AMap.OnMarkerClickListener, OnRouteSearchListener {
     private MapView mapView;
     private AMap aMap;
     Toolbar toolbar;
@@ -75,9 +76,7 @@ public class MainActivity extends Activity implements LocationSource,
         mapView = (MapView) findViewById(R.id.map);
         toolbar = (Toolbar) findViewById(R.id.mytoolbar);
         mContext = this.getApplicationContext();
-        assert mapView != null;
         mapView.onCreate(savedInstanceState);
-
         init();
     }
 
@@ -101,7 +100,7 @@ public class MainActivity extends Activity implements LocationSource,
         locationStyle.strokeWidth(1);
         aMap.setMyLocationStyle(locationStyle);
         toolbar.inflateMenu(R.menu.ic_menu);
-        toolbar.setTitle("距离");
+        toolbar.setTitle(R.string.ToolbarTitle);
         seted = 0;
     }
 
@@ -112,11 +111,26 @@ public class MainActivity extends Activity implements LocationSource,
         mRouteSearch = new RouteSearch(this);
         mRouteSearch.setRouteSearchListener(this);
         sv = (SearchView) findViewById(R.id.action_search);
-        sv.setOnQueryTextListener(this);
+//        sv.setOnQueryTextListener(this);
+        sv.setOnQueryTextListener(svlitenner);
+        toolbar.setOnMenuItemClickListener(tbls);
         inputManager = (InputMethodManager) sv.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
     }
 
+    Toolbar.OnMenuItemClickListener tbls=new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            int id = item.getItemId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.m_about) {
+                Intent intent=new Intent(MainActivity.this,About.class);
+                startActivity(intent);
+            }
+            return false;
+        }
+    };
 
     //------------------定位start------------------
     public void onLocationChanged(AMapLocation amapLocation) {
@@ -126,7 +140,7 @@ public class MainActivity extends Activity implements LocationSource,
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
                 deactivate();
             } else {
-                String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
+                String errText = getString(R.string.LocationFail) + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
                 Log.e("AmapErr", errText);
             }
         }
@@ -167,7 +181,7 @@ public class MainActivity extends Activity implements LocationSource,
         progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progDialog.setIndeterminate(false);
         progDialog.setCancelable(false);
-        progDialog.setMessage("正在搜索:");
+        progDialog.setMessage(getString(R.string.Locating));
         progDialog.show();
     }
 //------------------定位end------------------
@@ -175,25 +189,34 @@ public class MainActivity extends Activity implements LocationSource,
     /**
      * 隐藏进度框
      */
+
     //------------------查询start------------------
     private void dissmissProgressDialog() {
         if (progDialog != null) {
             progDialog.dismiss();
         }
     }
+    SearchView.OnQueryTextListener svlitenner=new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            KeyWord = query;
+            if ("".equals(query)) {
+                Toast.makeText(MainActivity.this, R.string.PleaseTypeKey, Toast.LENGTH_SHORT).show();
+                return false;
+            } else {
+                doSearchQuery();
+                sv.clearFocus();
+            }
 
-    public boolean onQueryTextSubmit(String query) {
-        KeyWord = query;
-        if ("".equals(query)) {
-            Toast.makeText(MainActivity.this, "请输入搜索关键字", Toast.LENGTH_SHORT).show();
-            return true;
-        } else {
-            doSearchQuery();
-            sv.clearFocus();
+            return false;
         }
 
-        return false;
-    }
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            return false;
+        }
+    };
+
 
     protected void doSearchQuery() {
         showProgressDialog();// 显示进度框
@@ -206,11 +229,6 @@ public class MainActivity extends Activity implements LocationSource,
         poiSearch.searchPOIAsyn();
     }
 
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
-    }
 
     @Override
     public void onPoiSearched(PoiResult result, int rCode) {
@@ -228,11 +246,11 @@ public class MainActivity extends Activity implements LocationSource,
 //                        poiOverlay.addToMap();
                         poiOverlay.zoomToSpan();
                     } else {
-                        Toast.makeText(MainActivity.this, "无结果", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.NoResult, Toast.LENGTH_SHORT).show();
                     }
                 }
             } else {
-                Toast.makeText(MainActivity.this, "无结果", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.NoResult, Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(MainActivity.this, rCode, Toast.LENGTH_SHORT).show();
@@ -261,7 +279,7 @@ public class MainActivity extends Activity implements LocationSource,
             mStartPoint.setLongitude(latLng.longitude);
             aMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.amap_start)));
             seted = 1;
-            Toast.makeText(mContext, "起点已设置", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.SettleStart, Toast.LENGTH_SHORT).show();
         } else if (seted == 1) {
             mEndPoint.setLatitude(latLng.latitude);
             mEndPoint.setLongitude(latLng.longitude);
@@ -269,18 +287,18 @@ public class MainActivity extends Activity implements LocationSource,
             seted = 2;
             searchRouteResult();
         } else {
-            Toast.makeText(mContext, "请先重置起点", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.PleaseResetStart, Toast.LENGTH_SHORT).show();
         }
     }
 
 
     public void searchRouteResult() {
         if (mStartPoint.getLatitude() == 0) {
-            ToastUtil.show(mContext, "请点击地图选择起点");
+            ToastUtil.show(mContext, getString(R.string.TypeToStart));
             return;
         }
         if (mEndPoint.getLatitude() == 0) {
-            ToastUtil.show(mContext, "请点击地图选择终点");
+            ToastUtil.show(mContext, getString(R.string.TypeToEnd));
             return;
         }
         showProgressDialog();
@@ -307,17 +325,16 @@ public class MainActivity extends Activity implements LocationSource,
                     final DrivePath drivePath = mDriveRouteResult.getPaths()
                             .get(0);
                     int dis = (int) drivePath.getDistance();
-//                    Toast.makeText(mContext, "两点的距离是" + dis + "米", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, ShareDis.class);
                     intent.putExtra("dis", dis);
                     startActivity(intent);
                     reset();
                 } else if (result != null && result.getPaths() == null) {
-                    ToastUtil.show(mContext, "没有搜索到相关数据");
+                    ToastUtil.show(mContext, getString(R.string.NoSearchResult));
                 }
 
             } else {
-                ToastUtil.show(mContext, "没有搜索到相关数据");
+                ToastUtil.show(mContext, getString(R.string.NoSearchResult));
             }
         } else {
             ToastUtil.showerror(this.getApplicationContext(), errorCode);

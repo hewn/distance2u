@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat;
 import com.squareup.picasso.Picasso;
 
 
-public class ShareDis extends Activity {
+public class ShareDis extends AppCompatActivity {
 
     int imagewidth;
     int imageheight;
@@ -54,7 +54,7 @@ public class ShareDis extends Activity {
         init();
         Intent intent = getIntent();
         int dis = intent.getIntExtra("dis", 0);
-        show.setText("现实的距离是" + dis + "米");
+        show.setText(getString(R.string.RealityDistance) + dis + getString(R.string.Meter));
         String status = Environment.getExternalStorageState();
         if (status.equals(Environment.MEDIA_MOUNTED)) {
             File destDir = new File("sdcard/Pictures/distance2u/");
@@ -62,7 +62,7 @@ public class ShareDis extends Activity {
                 destDir.mkdirs();
             }
         } else {
-            Toast.makeText(ShareDis.this, "没有文件操作权限", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShareDis.this, R.string.NoFileOperationAuthority, Toast.LENGTH_SHORT).show();
         }
         ViewTreeObserver vto = relaout.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -92,7 +92,7 @@ public class ShareDis extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 0x123) {
-                    Toast.makeText(ShareDis.this, "保存完毕", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShareDis.this, R.string.Saved, Toast.LENGTH_SHORT).show();
                     send();
                 }
             }
@@ -110,8 +110,8 @@ public class ShareDis extends Activity {
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.notify)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.notifyb))
-                .setContentTitle("图片已保存")
-                .setContentText("点击打开图片")
+                .setContentTitle(getString(R.string.ImagesSaved))
+                .setContentText(getString(R.string.ClickToViewImage))
                 .setWhen(System.currentTimeMillis())
                 .setContentIntent(pi)
                 .build();
@@ -130,7 +130,7 @@ public class ShareDis extends Activity {
         imageView.setMinimumWidth(imagewidth);
         imageView.setMinimumHeight(imageheight);
         save = (Button) findViewById(R.id.save);
-        Picasso.with(ShareDis.this).load("http://solodog.cn/img/back1.jpg").into(imageView);
+        Picasso.with(ShareDis.this).load("http://solodog.cn/Distance2U/img/back1.jpg").into(imageView);
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
     }

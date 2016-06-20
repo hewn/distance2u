@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Distance2U</string>
+    <string name="search">search</string>
+    <string name="more">more</string>
+    <string name="about">about</string>
+    <string name="ToolbarTitle">Distance2U</string>
+    <string name="LocationFail">Locating failed</string>
+    <string name="Locating">searching:</string>
+    <string name="PleaseTypeKey">Please enter place name</string>
+    <string name="NoResult">Found nothing:(</string>
+    <string name="SettleStart">Starting point has been set</string>
+    <string name="PleaseResetStart">Please reset strat point</string>
+    <string name="TypeToStart">Please click on the map to select a starting point</string>
+    <string name="TypeToEnd">Please click on the map to select the end</string>
+    <string name="NoSearchResult">No Search data</string>
+    <string name="RealityDistance">Reality distance is</string>
+    <string name="Meter">meters</string>
+    <string name="NoFileOperationAuthority">No file operation authority</string>
+    <string name="Saved">Saved</string>
+    <string name="ImagesSaved">Images saved</string>
+    <string name="ClickToViewImage">Click to view image</string>
+    <string name="version">v1.0</string>
+</resources>
