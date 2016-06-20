@@ -1,15 +1,19 @@
 package cn.solodog.distance2u;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -39,7 +43,7 @@ import com.amap.api.services.route.WalkRouteResult;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LocationSource,
+public class MainActivity extends Activity implements LocationSource,
         AMapLocationListener, PoiSearch.OnPoiSearchListener,
         SearchView.OnQueryTextListener, AMap.OnMapClickListener, AMap.OnMarkerClickListener, OnRouteSearchListener {
     private MapView mapView;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private DriveRouteResult mDriveRouteResult;
     private int seted;
     private SearchView sv;
+    private InputMethodManager inputManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,12 +113,13 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         mRouteSearch.setRouteSearchListener(this);
         sv = (SearchView) findViewById(R.id.action_search);
         sv.setOnQueryTextListener(this);
+        inputManager = (InputMethodManager) sv.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
     }
 
 
     //------------------定位start------------------
-        public void onLocationChanged(AMapLocation amapLocation) {
+    public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
             if (amapLocation != null
                     && amapLocation.getErrorCode() == 0) {
@@ -125,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             }
         }
     }
+
 
     public void activate(OnLocationChangedListener listener) {
         mListener = listener;
@@ -182,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             return true;
         } else {
             doSearchQuery();
+            sv.clearFocus();
         }
 
         return false;
@@ -238,12 +246,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     }
 
     public boolean onMarkerClick(Marker marker) {
-        if(marker.getPosition().latitude==mStartPoint.getLatitude()&&marker.getPosition().longitude==mStartPoint.getLongitude())
-        {
+        if (marker.getPosition().latitude == mStartPoint.getLatitude() && marker.getPosition().longitude == mStartPoint.getLongitude()) {
             reset();
         }
         return true;
     }
+
     //------------------查询end------------------
     //------------------路径start----------------
     @Override
@@ -300,8 +308,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                             .get(0);
                     int dis = (int) drivePath.getDistance();
 //                    Toast.makeText(mContext, "两点的距离是" + dis + "米", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(MainActivity.this,ShareDis.class);
-                    intent.putExtra("dis",dis);
+                    Intent intent = new Intent(MainActivity.this, ShareDis.class);
+                    intent.putExtra("dis", dis);
                     startActivity(intent);
                     reset();
                 } else if (result != null && result.getPaths() == null) {
@@ -320,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
 
     }
+
     public void reset() {
         seted = 0;
         aMap.clear();
@@ -356,5 +365,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             mlocationClient.onDestroy();
         }
     }
+
 }
 

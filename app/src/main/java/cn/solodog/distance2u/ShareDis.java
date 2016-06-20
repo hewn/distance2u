@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat;
 import com.squareup.picasso.Picasso;
 
 
-public class ShareDis extends AppCompatActivity {
+public class ShareDis extends Activity {
 
     int imagewidth;
     int imageheight;
